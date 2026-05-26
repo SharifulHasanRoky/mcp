@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "mother-mcp": {
+      "command": "node",
+      "args": ["src/index.js"],
+      "cwd": ".",
+      "env": {
+        "MOTHER_MCP_LOG_LEVEL": "info"
+      }
+    }
+  }
+}
