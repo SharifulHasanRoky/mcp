@@ -14,6 +14,7 @@ import { PluginRegistry } from "./core/plugin-registry.js";
 import { CommandRouter } from "./core/command-router.js";
 import { AuthManager } from "./core/auth-manager.js";
 import { ConfigManager } from "./core/config-manager.js";
+import { loadEnvAndConfigure } from "./core/env-loader.js";
 
 // Import all platform plugins
 import { FacebookAdsPlugin } from "./plugins/ads/facebook-ads.js";
@@ -62,6 +63,17 @@ const plugins = [
 ];
 
 plugins.forEach((plugin) => registry.register(plugin));
+
+// Auto-configure plugins from .env file
+console.error("");
+console.error("🔑 Auto-configuring from .env...");
+const autoConfigured = loadEnvAndConfigure(registry);
+if (autoConfigured > 0) {
+  console.error(`   ✅ ${autoConfigured} platform(s) auto-configured!`);
+} else {
+  console.error("   ℹ️  No .env credentials found. Use 'mother_configure' or edit .env file.");
+}
+console.error("");
 
 // ============================================================
 // MCP Server
