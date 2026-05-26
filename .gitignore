@@ -1,0 +1,12 @@
+# Environment (contains API keys - NEVER commit!)
+.env
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Credentials backup
+*.backup
