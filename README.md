@@ -1,252 +1,148 @@
-# 🚀 Mother MCP — Master Control Platform
+# 🚀 Mother MCP
 
-**One connection. All your tools. Total control.**
+**একটা link add করো → সব tools চলবে command দিয়ে।**
 
-Mother MCP is a unified Model Context Protocol (MCP) server that connects and manages ALL your marketing tools, ad platforms, analytics, project management, and AI tools from a single interface. Connect once, command everything.
+---
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     🎯 MOTHER MCP                           │
-│              Master Control Platform v1.0                     │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  📢 ADS          📊 ANALYTICS     📋 PRODUCTIVITY   🤖 AI  │
-│  ─────────       ────────────     ──────────────    ─────  │
-│  Facebook        GA4              ClickUp           OpenAI  │
-│  Google          Tag Manager      Notion            Claude  │
-│  TikTok          Looker Studio    Google Docs       Gemini  │
-│  Pinterest                        Google Sheets     DALL-E  │
-│  LinkedIn                                           Stable  │
-│  X (Twitter)                                        Diffn   │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
+## কী এটা?
 
-## ✨ Key Features
+Mother MCP হলো একটা master MCP server — এটা একবার connect করলে তুমি একটা AI client (Claude, Cursor, etc) থেকেই সব platform control করতে পারবে:
 
-- **14 Platform Connectors** — All major ad, analytics, PM, and AI platforms
-- **60+ Tools** — Campaign management, reporting, content creation, and more
-- **Plugin Architecture** — Easy to add new platforms
-- **Unified Auth** — One credentials store for all platforms
-- **AI-Powered** — Generate ad copy, images, analyze data with OpenAI/Claude/Gemini
-- **MCP Standard** — Works with Claude Desktop, Cursor, Kiro, and any MCP client
+- **Facebook Ads** — campaign বানাও, performance দেখো
+- **Google Ads** — search ads, keywords, bidding manage করো
+- **TikTok Ads** — campaign, audience, creative report
+- **Pinterest Ads** — promoted pins, analytics
+- **LinkedIn Ads** — B2B campaigns, targeting, lead gen
+- **X (Twitter) Ads** — promoted tweets, analytics
+- **GA4** — analytics report, real-time, traffic sources
+- **Google Tag Manager** — tags, triggers, publish
+- **Looker Studio** — reports, embed links
+- **ClickUp** — tasks, lists, spaces
+- **Notion** — pages, databases, search
+- **Google Docs** — create, read, edit documents
+- **Google Sheets** — read, write, append data
 
-## 📦 Quick Setup
+---
 
-### 1. Install
+## কিভাবে ব্যবহার করবে
+
+### Step 1: Clone করো
 
 ```bash
-cd mother-mcp
-npm install
+git clone https://github.com/SharifulHasanRoky/mcp.git
 ```
 
-### 2. Configure with Claude Desktop
+### Step 2: Claude Desktop / Cursor config-এ add করো
 
-Add to your `claude_desktop_config.json`:
+`claude_desktop_config.json` (বা Cursor settings):
 
 ```json
 {
   "mcpServers": {
     "mother-mcp": {
       "command": "node",
-      "args": ["/path/to/mother-mcp/src/index.js"]
+      "args": ["/path/to/mcp/src/index.js"],
+      "env": {
+        "FB_ACCESS_TOKEN": "তোমার-token",
+        "FB_AD_ACCOUNT_ID": "act_xxxxx",
+        "GA4_ACCESS_TOKEN": "তোমার-token",
+        "GA4_PROPERTY_ID": "123456789",
+        "CLICKUP_TOKEN": "তোমার-token",
+        "CLICKUP_TEAM_ID": "xxxxx",
+        "NOTION_TOKEN": "secret_xxxxx"
+      }
     }
   }
 }
 ```
 
-### 3. Configure Platforms
+> **শুধু যেগুলো ব্যবহার করবে সেগুলোর token দাও!** বাকিগুলো দিতে হবে না।
 
-Once connected, use the built-in configuration tools:
-
-```
-→ mother_status            # See all platforms
-→ mother_configure         # Set up credentials for a platform
-→ mother_list_tools        # See all available tools
-→ mother_help              # Get detailed help
-```
-
-## 🔑 Platform Setup
-
-### Ad Platforms
-
-| Platform | Required Credentials | Get From |
-|----------|---------------------|----------|
-| Facebook Ads | `access_token`, `ad_account_id` | [Meta Developers](https://developers.facebook.com) |
-| Google Ads | `developer_token`, `client_id`, `client_secret`, `refresh_token`, `customer_id` | [Google Ads API](https://developers.google.com/google-ads/api) |
-| TikTok Ads | `access_token`, `advertiser_id` | [TikTok Marketing API](https://business-api.tiktok.com) |
-| Pinterest Ads | `access_token`, `ad_account_id` | [Pinterest Developers](https://developers.pinterest.com) |
-| LinkedIn Ads | `access_token`, `ad_account_id` | [LinkedIn Marketing](https://www.linkedin.com/developers) |
-| X Ads | `api_key`, `api_secret`, `access_token`, `access_token_secret`, `ad_account_id` | [X Developer](https://developer.x.com) |
-
-### Analytics & Tracking
-
-| Platform | Required Credentials | Get From |
-|----------|---------------------|----------|
-| GA4 | `access_token`, `property_id` | [Google Cloud Console](https://console.cloud.google.com) |
-| Tag Manager | `access_token`, `account_id`, `container_id` | [GTM](https://tagmanager.google.com) |
-| Looker Studio | `access_token` | [Google Cloud Console](https://console.cloud.google.com) |
-
-### Productivity
-
-| Platform | Required Credentials | Get From |
-|----------|---------------------|----------|
-| ClickUp | `api_token`, `team_id` | [ClickUp Settings](https://app.clickup.com) |
-| Notion | `api_key` | [Notion Integrations](https://www.notion.so/my-integrations) |
-| Google Docs | `access_token` | [Google Cloud Console](https://console.cloud.google.com) |
-| Google Sheets | `access_token` | [Google Cloud Console](https://console.cloud.google.com) |
-
-### AI Tools
-
-| Provider | Credential | Get From |
-|----------|-----------|----------|
-| OpenAI | `openai_api_key` | [OpenAI Platform](https://platform.openai.com) |
-| Claude | `anthropic_api_key` | [Anthropic Console](https://console.anthropic.com) |
-| Gemini | `gemini_api_key` | [AI Studio](https://aistudio.google.com) |
-| Stability AI | `stability_api_key` | [Stability Platform](https://platform.stability.ai) |
-
-## 💡 Usage Examples
-
-### Ad Management
+### Step 3: Command দাও!
 
 ```
-"Create a Facebook campaign for my new product launch with $50/day budget"
-"Show me Google Ads performance for last 30 days"
-"Pause all TikTok campaigns with CPC above $2"
-"Create a lookalike audience on Facebook from my best customers"
-"Get LinkedIn campaign analytics broken down by job title"
+"আমার Facebook campaigns দেখাও"
+"GA4 থেকে গত ৭ দিনের top pages দাও"
+"ClickUp-এ একটা task বানাও"
+"Google Ads performance last 30 days"
+"Notion-এ search করো 'marketing plan'"
 ```
 
-### Analytics
-
-```
-"Show me real-time active users on GA4"
-"What are my top 10 pages by conversions this month?"
-"Create a new GA4 event tag in GTM for button clicks"
-"Generate Looker Studio embed URL for our dashboard"
-"Show traffic sources breakdown for last 30 days"
-```
-
-### Productivity
-
-```
-"Create a ClickUp task for campaign review, assign to John, due Friday"
-"Add a new page in Notion with our weekly marketing report"
-"Create a Google Sheet with this month's ad spend data"
-"Search Notion for all pages about Q4 strategy"
-```
-
-### AI-Powered
-
-```
-"Generate 5 ad copy variations for TikTok promoting our summer sale"
-"Analyze this performance data and tell me what to optimize"
-"Generate relevant hashtags for our Instagram fitness post"
-"Create an ad image for our new product launch"
-"Rewrite this LinkedIn post for a more casual Twitter audience"
-```
-
-## 🏗️ Architecture
-
-```
-mother-mcp/
-├── src/
-│   ├── index.js                    # Main MCP server entry point
-│   ├── core/
-│   │   ├── base-plugin.js          # Base class for all plugins
-│   │   ├── plugin-registry.js      # Plugin registration & discovery
-│   │   ├── command-router.js       # Routes commands to plugins
-│   │   ├── auth-manager.js         # Credentials storage
-│   │   └── config-manager.js       # Global configuration
-│   └── plugins/
-│       ├── ads/
-│       │   ├── facebook-ads.js     # Meta Marketing API
-│       │   ├── google-ads.js       # Google Ads API
-│       │   ├── tiktok-ads.js       # TikTok Marketing API
-│       │   ├── pinterest-ads.js    # Pinterest Marketing API
-│       │   ├── linkedin-ads.js     # LinkedIn Marketing API
-│       │   └── x-ads.js           # X/Twitter Ads API
-│       ├── analytics/
-│       │   ├── ga4.js              # GA4 Data API
-│       │   ├── tag-manager.js      # GTM API
-│       │   └── looker-studio.js    # Looker Studio API
-│       ├── productivity/
-│       │   ├── clickup.js          # ClickUp API
-│       │   ├── notion.js           # Notion API
-│       │   ├── google-docs.js      # Google Docs API
-│       │   └── google-sheets.js    # Google Sheets API
-│       └── ai/
-│           └── ai-tools.js         # Multi-provider AI tools
-├── package.json
-├── mcp-config.json                 # MCP client configuration
-├── TOOLS_REFERENCE.md              # Complete tools documentation
-└── README.md
-```
-
-## 🔌 Adding New Plugins
-
-Create a new plugin by extending `BasePlugin`:
-
-```javascript
-import { BasePlugin } from "../../core/base-plugin.js";
-
-export class MyPlugin extends BasePlugin {
-  constructor() {
-    super({
-      id: "my_plugin",
-      name: "My Platform",
-      category: "ads", // ads | analytics | productivity | ai
-      description: "Description of what this plugin does",
-    });
-  }
-
-  getRequiredCredentials() {
-    return [
-      { key: "api_key", description: "API Key", required: true },
-    ];
-  }
-
-  getTools() {
-    return [
-      {
-        name: "my_plugin_action",
-        description: "What this tool does",
-        inputSchema: { type: "object", properties: { /* ... */ } },
-      },
-    ];
-  }
-
-  async execute(toolName, args) {
-    // Handle tool execution
-  }
-}
-```
-
-Then register it in `src/index.js`:
-
-```javascript
-import { MyPlugin } from "./plugins/category/my-plugin.js";
-plugins.push(new MyPlugin());
-```
-
-## 📊 Stats
-
-| Metric | Count |
-|--------|-------|
-| Total Platforms | 14 |
-| Total Tools | 60+ |
-| Ad Platforms | 6 |
-| Analytics Tools | 3 |
-| Productivity Tools | 4 |
-| AI Providers | 4 |
-| Categories | 4 |
-
-## 📄 License
-
-MIT
+**ব্যাস! এটুকুই!** 🎯
 
 ---
 
-**Built with ❤️ for marketers who want to control everything from one place.**
+## Platform Tokens কোথা থেকে পাবে
 
-*Mother MCP — Connect once, control everything.*
+| Platform | Token | কোথায় পাবে |
+|----------|-------|-------------|
+| Facebook Ads | `FB_ACCESS_TOKEN`, `FB_AD_ACCOUNT_ID` | [developers.facebook.com](https://developers.facebook.com) |
+| Google Ads | `GOOGLE_ADS_TOKEN`, `GOOGLE_ADS_DEVELOPER_TOKEN`, `GOOGLE_ADS_CUSTOMER_ID` | [Google Ads API](https://developers.google.com/google-ads/api) |
+| TikTok Ads | `TIKTOK_ACCESS_TOKEN`, `TIKTOK_ADVERTISER_ID` | [business-api.tiktok.com](https://business-api.tiktok.com) |
+| Pinterest | `PINTEREST_ACCESS_TOKEN`, `PINTEREST_AD_ACCOUNT_ID` | [developers.pinterest.com](https://developers.pinterest.com) |
+| LinkedIn | `LINKEDIN_ACCESS_TOKEN`, `LINKEDIN_AD_ACCOUNT_ID` | [linkedin.com/developers](https://www.linkedin.com/developers) |
+| X (Twitter) | `X_ACCESS_TOKEN`, `X_AD_ACCOUNT_ID` | [developer.x.com](https://developer.x.com) |
+| GA4 | `GA4_ACCESS_TOKEN`, `GA4_PROPERTY_ID` | [Google Cloud Console](https://console.cloud.google.com) |
+| Tag Manager | `GTM_ACCESS_TOKEN`, `GTM_ACCOUNT_ID`, `GTM_CONTAINER_ID` | [tagmanager.google.com](https://tagmanager.google.com) |
+| Looker Studio | `LOOKER_ACCESS_TOKEN` | [Google Cloud Console](https://console.cloud.google.com) |
+| ClickUp | `CLICKUP_TOKEN`, `CLICKUP_TEAM_ID` | ClickUp → Settings → Apps |
+| Notion | `NOTION_TOKEN` | [notion.so/my-integrations](https://www.notion.so/my-integrations) |
+| Google Docs/Sheets | `GOOGLE_ACCESS_TOKEN` | [Google Cloud Console](https://console.cloud.google.com) |
+
+---
+
+## Available Tools (60+)
+
+Use `mother_status` to see which platforms are connected.
+Use `mother_list_tools` to see all available commands.
+
+### Ads (6 platforms)
+- `fb_ads_list_campaigns`, `fb_ads_create_campaign`, `fb_ads_get_performance`, `fb_ads_update_campaign`, `fb_ads_create_audience`, `fb_ads_insights_breakdown`
+- `google_ads_list_campaigns`, `google_ads_create_campaign`, `google_ads_get_performance`, `google_ads_manage_keywords`, `google_ads_search_terms`
+- `tiktok_ads_list_campaigns`, `tiktok_ads_create_campaign`, `tiktok_ads_get_performance`, `tiktok_ads_manage_audience`
+- `pinterest_ads_list_campaigns`, `pinterest_ads_create_campaign`, `pinterest_ads_get_analytics`
+- `linkedin_ads_list_campaigns`, `linkedin_ads_create_campaign`, `linkedin_ads_get_analytics`, `linkedin_ads_targeting`
+- `x_ads_list_campaigns`, `x_ads_create_campaign`, `x_ads_get_analytics`, `x_ads_promote_tweet`
+
+### Analytics (3 platforms)
+- `ga4_get_report`, `ga4_realtime`, `ga4_top_pages`, `ga4_traffic_sources`, `ga4_conversions`
+- `gtm_list_tags`, `gtm_create_tag`, `gtm_list_triggers`, `gtm_create_trigger`, `gtm_list_variables`, `gtm_publish`
+- `looker_list_reports`, `looker_get_report`, `looker_get_embed_url`, `looker_share_report`
+
+### Productivity (4 platforms)
+- `clickup_create_task`, `clickup_get_tasks`, `clickup_update_task`, `clickup_get_spaces`, `clickup_get_lists`
+- `notion_create_page`, `notion_search`, `notion_query_database`, `notion_update_page`
+- `gdocs_create`, `gdocs_read`, `gdocs_append`, `gdocs_find_replace`, `gdocs_list`
+- `gsheets_create`, `gsheets_read`, `gsheets_write`, `gsheets_append`
+
+---
+
+## Architecture
+
+```
+mcp/
+├── src/
+│   ├── index.js              ← Entry point (start server)
+│   ├── core/
+│   │   ├── mcp-server.js     ← MCP protocol handler
+│   │   ├── base-plugin.js    ← Plugin base class
+│   │   ├── plugin-registry.js ← Plugin registration
+│   │   └── command-router.js  ← Routes commands
+│   └── plugins/
+│       ├── ads/              ← FB, Google, TikTok, Pinterest, LinkedIn, X
+│       ├── analytics/        ← GA4, GTM, Looker Studio
+│       └── productivity/     ← ClickUp, Notion, Docs, Sheets
+├── mcp-config.json           ← Example config (copy to your client)
+├── package.json
+└── README.md
+```
+
+**No external dependencies. Just Node.js.**
+
+---
+
+## License
+
+MIT
+
+**Mother MCP — Link add করো, command দাও, কাজ হবে।** 🔥

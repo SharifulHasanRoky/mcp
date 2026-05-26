@@ -1,39 +1,12 @@
 {
   "name": "mother-mcp",
   "version": "1.0.0",
-  "description": "Mother MCP - A unified Master Control Platform to manage all marketing tools, ads platforms, analytics, PM tools, and AI tools from one command center",
+  "description": "Mother MCP - One link, all your tools. Ads, Analytics, Productivity - everything controlled from one MCP.",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "node --watch src/index.js",
-    "install-mcp": "node install.js",
-    "setup": "node setup-wizard.js",
-    "postinstall": "node install.js"
+    "start": "node src/index.js"
   },
-  "bin": {
-    "mother-mcp": "src/index.js"
-  },
-  "keywords": [
-    "mcp",
-    "marketing",
-    "ads",
-    "analytics",
-    "automation",
-    "facebook-ads",
-    "google-ads",
-    "tiktok-ads",
-    "pinterest-ads",
-    "linkedin-ads",
-    "ga4",
-    "tag-manager",
-    "looker-studio",
-    "clickup",
-    "notion",
-    "ai-tools"
-  ],
-  "author": "",
   "license": "MIT",
   "dependencies": {}
-
 }

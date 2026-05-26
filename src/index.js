@@ -1,20 +1,15 @@
 /**
- * Mother MCP - Master Control Platform
+ * 🚀 Mother MCP - Master Control Platform
  * 
- * A unified MCP server that connects and manages all marketing tools,
- * ad platforms, analytics, project management, and AI tools.
+ * Just add this MCP link → command দাও → কাজ হবে।
  * 
- * Connect once → Control everything.
- * 
- * Uses lightweight built-in MCP protocol implementation (no external deps).
+ * All your ad platforms, analytics, and productivity tools
+ * controlled from one single MCP connection.
  */
 
 import { MCPServer } from "./core/mcp-server.js";
 import { PluginRegistry } from "./core/plugin-registry.js";
 import { CommandRouter } from "./core/command-router.js";
-import { AuthManager } from "./core/auth-manager.js";
-import { ConfigManager } from "./core/config-manager.js";
-import { loadEnvAndConfigure } from "./core/env-loader.js";
 
 // Import all platform plugins
 import { FacebookAdsPlugin } from "./plugins/ads/facebook-ads.js";
@@ -33,16 +28,12 @@ import { NotionPlugin } from "./plugins/productivity/notion.js";
 import { GoogleDocsPlugin } from "./plugins/productivity/google-docs.js";
 import { GoogleSheetsPlugin } from "./plugins/productivity/google-sheets.js";
 
-import { AIToolsPlugin } from "./plugins/ai/ai-tools.js";
-
 // ============================================================
-// Initialize Mother MCP
+// Initialize
 // ============================================================
 
-const config = new ConfigManager();
-const auth = new AuthManager(config);
 const registry = new PluginRegistry();
-const router = new CommandRouter(registry, auth);
+const router = new CommandRouter(registry);
 
 // Register all plugins
 const plugins = [
@@ -59,21 +50,13 @@ const plugins = [
   new NotionPlugin(),
   new GoogleDocsPlugin(),
   new GoogleSheetsPlugin(),
-  new AIToolsPlugin(),
 ];
 
-plugins.forEach((plugin) => registry.register(plugin));
-
-// Auto-configure plugins from .env file
-console.error("");
-console.error("🔑 Auto-configuring from .env...");
-const autoConfigured = loadEnvAndConfigure(registry);
-if (autoConfigured > 0) {
-  console.error(`   ✅ ${autoConfigured} platform(s) auto-configured!`);
-} else {
-  console.error("   ℹ️  No .env credentials found. Use 'mother_configure' or edit .env file.");
-}
-console.error("");
+plugins.forEach((plugin) => {
+  // Auto-configure from environment variables
+  plugin.loadFromEnv();
+  registry.register(plugin);
+});
 
 // ============================================================
 // MCP Server
@@ -84,20 +67,16 @@ const server = new MCPServer({
   version: "1.0.0",
 });
 
-server.onListTools(() => {
-  return router.getAllTools();
-});
+server.onListTools(() => router.getAllTools());
 
 server.onCallTool(async (name, args) => {
   try {
     const result = await router.execute(name, args);
     return {
-      content: [
-        {
-          type: "text",
-          text: typeof result === "string" ? result : JSON.stringify(result, null, 2),
-        },
-      ],
+      content: [{
+        type: "text",
+        text: typeof result === "string" ? result : JSON.stringify(result, null, 2),
+      }],
     };
   } catch (error) {
     return {
@@ -108,5 +87,6 @@ server.onCallTool(async (name, args) => {
 });
 
 server.start();
-console.error("🚀 Mother MCP Server running - All systems connected!");
-console.error(`📦 ${plugins.length} plugins loaded | ${router.getAllTools().length} tools available`);
+
+const configured = plugins.filter(p => p.isConfigured()).length;
+console.error(`🚀 Mother MCP running | ${plugins.length} platforms | ${router.getAllTools().length} tools | ${configured} connected`);

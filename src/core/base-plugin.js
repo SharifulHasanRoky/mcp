@@ -1,86 +1,75 @@
 /**
- * Base Plugin - Abstract class that all platform plugins extend
+ * Base Plugin - Every platform plugin extends this.
  * 
- * Provides the common interface and utilities for all connectors.
- * Each plugin must implement: getTools(), execute(), getRequiredCredentials()
+ * Each plugin reads its own API tokens from environment variables.
+ * User puts tokens in the MCP config "env" section → done.
  */
 
 export class BasePlugin {
-  constructor({ id, name, category, description }) {
+  constructor({ id, name, category, description, envPrefix }) {
     this.id = id;
     this.name = name;
     this.category = category;
     this.description = description;
+    this.envPrefix = envPrefix; // e.g. "FB_ADS"
     this.credentials = null;
   }
 
   /**
-   * Check if this plugin has been configured with credentials
+   * Auto-load credentials from environment variables.
+   * User sets these in their MCP config "env" block.
    */
+  loadFromEnv() {
+    const creds = {};
+    let found = false;
+
+    for (const { envKey, credKey } of this.getEnvMapping()) {
+      const value = process.env[envKey];
+      if (value) {
+        creds[credKey] = value;
+        found = true;
+      }
+    }
+
+    if (found) {
+      this.credentials = creds;
+    }
+  }
+
   isConfigured() {
     return this.credentials !== null;
   }
 
-  /**
-   * Set credentials for this plugin
-   */
   setCredentials(creds) {
     this.credentials = creds;
   }
 
-  /**
-   * Get list of tools this plugin provides (must override)
-   */
-  getTools() {
-    throw new Error(`Plugin ${this.id} must implement getTools()`);
-  }
+  // Override in each plugin
+  getEnvMapping() { return []; }
+  getTools() { throw new Error(`${this.id} must implement getTools()`); }
+  async execute(toolName, args) { throw new Error(`${this.id} must implement execute()`); }
 
   /**
-   * Execute a tool (must override)
-   */
-  async execute(toolName, args) {
-    throw new Error(`Plugin ${this.id} must implement execute()`);
-  }
-
-  /**
-   * Get required credentials list (must override)
-   */
-  getRequiredCredentials() {
-    throw new Error(`Plugin ${this.id} must implement getRequiredCredentials()`);
-  }
-
-  /**
-   * Get setup instructions for this plugin
-   */
-  getSetupInstructions() {
-    return `Visit the ${this.name} developer portal to obtain API credentials.`;
-  }
-
-  /**
-   * Make an authenticated API request
+   * Make API request with auth
    */
   async apiRequest(url, options = {}) {
-    const defaultHeaders = {
-      "Content-Type": "application/json",
-      ...this.getAuthHeaders(),
-    };
-
     const response = await fetch(url, {
       ...options,
-      headers: { ...defaultHeaders, ...options.headers },
+      headers: {
+        "Content-Type": "application/json",
+        ...this.getAuthHeaders(),
+        ...options.headers,
+      },
     });
 
     if (!response.ok) {
       const error = await response.text();
-      throw new Error(`API Error (${response.status}): ${error}`);
+      throw new Error(`${this.name} API Error (${response.status}): ${error}`);
     }
 
     return response.json();
   }
 
-  /**
-   * Get auth headers based on credentials (override per plugin)
-   */
   getAuthHeaders() {
     if (this.credentials?.access_token) {
       return { Authorization: `Bearer ${this.credentials.access_token}` };

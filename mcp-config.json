@@ -2,10 +2,31 @@
   "mcpServers": {
     "mother-mcp": {
       "command": "node",
-      "args": ["src/index.js"],
-      "cwd": ".",
+      "args": ["/FULL/PATH/TO/mcp/src/index.js"],
       "env": {
-        "MOTHER_MCP_LOG_LEVEL": "info"
+        "FB_ACCESS_TOKEN": "your-facebook-token",
+        "FB_AD_ACCOUNT_ID": "act_123456",
+        "GOOGLE_ADS_TOKEN": "your-google-token",
+        "GOOGLE_ADS_DEVELOPER_TOKEN": "your-dev-token",
+        "GOOGLE_ADS_CUSTOMER_ID": "123-456-7890",
+        "TIKTOK_ACCESS_TOKEN": "your-tiktok-token",
+        "TIKTOK_ADVERTISER_ID": "your-advertiser-id",
+        "PINTEREST_ACCESS_TOKEN": "your-pinterest-token",
+        "PINTEREST_AD_ACCOUNT_ID": "your-account-id",
+        "LINKEDIN_ACCESS_TOKEN": "your-linkedin-token",
+        "LINKEDIN_AD_ACCOUNT_ID": "your-account-id",
+        "X_ACCESS_TOKEN": "your-x-token",
+        "X_AD_ACCOUNT_ID": "your-account-id",
+        "GA4_ACCESS_TOKEN": "your-ga4-token",
+        "GA4_PROPERTY_ID": "123456789",
+        "GTM_ACCESS_TOKEN": "your-gtm-token",
+        "GTM_ACCOUNT_ID": "your-account-id",
+        "GTM_CONTAINER_ID": "your-container-id",
+        "LOOKER_ACCESS_TOKEN": "your-looker-token",
+        "CLICKUP_TOKEN": "your-clickup-token",
+        "CLICKUP_TEAM_ID": "your-team-id",
+        "NOTION_TOKEN": "your-notion-token",
+        "GOOGLE_ACCESS_TOKEN": "your-google-token"
       }
     }
   }
