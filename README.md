@@ -1,12 +1,18 @@
 # 🚀 Mother MCP
 
-**একটা link add করো → সব tools চলবে command দিয়ে।**
+**Just add the URL → All tools connected → Command দাও → কাজ হবে!**
+
+```
+🔗 https://mcp.yourdomain.com/mcp
+```
+
+> ☝️ Just this one link in Claude/Cursor — everything works!
 
 ---
 
 ## কী এটা?
 
-Mother MCP হলো একটা master MCP server — এটা একবার connect করলে তুমি একটা AI client (Claude, Cursor, etc) থেকেই সব platform control করতে পারবে:
+Mother MCP হলো একটা **remote MCP server** — ঠিক Higgsfield (`https://mcp.higgsfield.ai/mcp`) এর মতো। একটা URL add করলেই সব platform auto-connect:
 
 - **Facebook Ads** — campaign বানাও, performance দেখো
 - **Google Ads** — search ads, keywords, bidding manage করো
@@ -26,37 +32,38 @@ Mother MCP হলো একটা master MCP server — এটা একবা�
 
 ## কিভাবে ব্যবহার করবে
 
-### Step 1: Clone করো
+### Step 1: Deploy করো (যেকোন hosting-এ)
 
 ```bash
 git clone https://github.com/SharifulHasanRoky/mcp.git
+cd mcp
+
+# Environment variables set করো (platform tokens)
+export FB_ACCESS_TOKEN="তোমার-token"
+export CLICKUP_TOKEN="তোমার-token"
+export NOTION_TOKEN="secret_xxxxx"
+
+# Start server
+node src/index.js
+# 🚀 Server live at: http://localhost:3000/mcp
 ```
 
-### Step 2: Claude Desktop / Cursor config-এ add করো
+**Deploy options:** Vercel, Railway, Render, VPS — যেকোন জায়গায় deploy করো।
 
-`claude_desktop_config.json` (বা Cursor settings):
+### Step 2: URL add করো Claude/Cursor-এ
 
+Claude Desktop `claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
     "mother-mcp": {
-      "command": "node",
-      "args": ["/path/to/mcp/src/index.js"],
-      "env": {
-        "FB_ACCESS_TOKEN": "তোমার-token",
-        "FB_AD_ACCOUNT_ID": "act_xxxxx",
-        "GA4_ACCESS_TOKEN": "তোমার-token",
-        "GA4_PROPERTY_ID": "123456789",
-        "CLICKUP_TOKEN": "তোমার-token",
-        "CLICKUP_TEAM_ID": "xxxxx",
-        "NOTION_TOKEN": "secret_xxxxx"
-      }
+      "url": "https://your-domain.com/mcp"
     }
   }
 }
 ```
 
-> **শুধু যেগুলো ব্যবহার করবে সেগুলোর token দাও!** বাকিগুলো দিতে হবে না।
+**ব্যাস! এটুকুই! Just একটা URL!** ঠিক Higgsfield-এর মতো।
 
 ### Step 3: Command দাও!
 
